@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Vue Demo</title>
+	<style type="text/css">
+		#demo{padding:0 60px;}
+		.demo-head-container{padding: 10px;border-bottom:1px solid #ddd;}
+		.demo-head{ color: #333;  font-size: 28px; text-align:left;}
+		.demo-subhead{color: #5e6d82; font-size: 14px;line-height: 1em;}
+		.demo-title{ color: #1f2d3d; font-size: 22px; }
+		.demo-code{padding:10px; margin-bottom: 40px; background: #f4f4f4;}
+		.active{font-size: 20px;}
+		.text-danger{color: #F56C6C;font-weight: bolder;}
+		ul,li{list-style-type: none;}
+		a{color: #409EFF;}
+		input{ height: 40px;line-height: 40px; padding: 0 15px;border:1px solid #dcdfe6; outline: none; border-radius: 4px; font-size:400 12px Arial;}
+		input:hover{border:1px solid #ddd;}
+		input:focus{border:1px solid #409EFF;}
+		.btn{display: inline-block;line-height: 1;white-space: nowrap;cursor: pointer;background: #fff;border: 1px solid #dcdfe6;border-color: #dcdfe6;color: #606266;-webkit-appearance: none;text-align: center;box-sizing: border-box;outline: none;margin: 0;transition: .1s;font-weight: 500;-moz-user-select: none;-webkit-user-select: none;-ms-user-select: none;padding: 14px 20px;font-size: 14px;border-radius: 4px;}
+		.btn:hover{color: #409eff;border-color: #c6e2ff;background-color: #ecf5ff;}
+		.btn:active{color: #3a8ee6;border-color: #3a8ee6;outline: none;}
+	</style>
+</head>
+<body>
+	<div id="demo">
+		<div class="demo-head-container">
+			<h3 class="demo-head" style="">Demo</h3>
+			<p class="demo-subhead">记录每天练习</p>
+		</div>
+		<!-- 1. 绑定文本 -->
+		<p :class="title">1. 绑定文本 文本title属性  是否可见</p>
+		<p :class="code" v-bind:title="message" v-if="see">{{ message }}</p>
+		<!-- 2. for循环绑定项 -->
+		<p :class="title">2. for循环绑定项</p>
+		<ul :class="code">
+		<li v-for="(animal,index) in animals"> {{index}}-{{animal.text}} </li>
+		</ul>
+		<!-- 3.事件  -->
+		<p :class="title">3. 事件 反序字符串</p>
+		<div :class="code">
+			<p>{{ message1 }}</p>
+			<button :class="btn" v-on:click="reverseMsg">
+			click me
+			</button>
+		</div>
+		<!-- 4.文本输入框控件 属性设置 -->
+		<p :class="title">4. 文本输入框控件 属性设置</p>
+		<div :class="code">
+		  <input type="text" v-bind:disabled="isdisabled" v-model="message">
+		</div>
+		<!-- 5.插入html -->
+		<p :class="title">5. 动态嵌入HTML</p>
+		<div :class="code">
+			<p>{{ rawHtml }}</p>
+			<p v-html="rawHtml"></p>
+		</div>
+		<!-- 6.表达式 -->
+		<p :class="title">6. 表达式</p>
+		<div :class="code">
+			<p>{{count+1}}</p>
+			<p>{{ ok?'yes':'no'}}</p>
+			<p>{{message.split('').reverse().join('')}}</p>
+		</div>
+		<!-- 7.参数 href 与url值绑定-->
+		<p :class="title">7. 参数 href 与url值绑定</p>
+		<a :class="code" v-bind:href="url" target="_blank">百度链接</a>
+		<!-- 8.修饰符 -->
+		<p :class="title">8. 修饰符</p>
+		<form :class="code" v-on:submit.prevent="onSubmit"></form>
+		<!-- 9.对象语法 -->
+		<p :class="title">9. 对象语法</p>
+		<div :class="code">
+			<div class="static" v-bind:class="{ active:isActive,'text-danger':hasError}">我的样式</div>
+			<div :class="classObject">方法变了效果一样</div>
+			<div :class="addClass">我是计算属性效果还是一样哦</div>
+		</div>
+		<!-- 10.模板选择 -->
+		<p :class="title">10. 模板选择</p>
+		<div :class="code">
+			<template  v-if='loginType==="userName"'><label> 用户名:</label><input placeholder='enter your username' key='username-input'></template><template v-else><label >邮  箱:</label><input placeholder='enter your email' key='email-input' ></template>
+			<button :class="btn" v-on:click="onChangeLogin">切换登录方式</button>
+		</div>
+		<!--11.v-for 通过一个对象的属性来迭代 -->
+		<p :class="title">11. v-for 通过一个对象的属性来迭代</p>
+		<ul :class="code" id="v-for-object" >
+			<li v-for="value in object" :key="value.id">{{value}}</li>
+		</ul>
+		<p :class="title">11.1 v-for 提供第二个的参数为键名</p>
+		<ul :class="code" id="v-for-object" >
+			<li v-for="(value,key) in object">{{key}}：{{value}}</li>
+		</ul>
+		<p :class="title">11.1 v-for 提供第三个参数为索引</p>
+		<ul :class="code" id="v-for-object"  >
+			<li v-for="(value,key,index) in object" :key="value.id">序号：{{index}} 数据： {{key}}：{{value}}</li>
+		</ul>
+
+	</div>
+</body>
+<script type="text/javascript" src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js" ></script>
+<script type="text/javascript">
+	var vm=new Vue({
+		el: '#demo',
+		data: {
+			title:"demo-title",
+			code:"demo-code",
+			btn:"btn",
+			count:0,
+			message: 'Hello Everyone!',
+			message1:'123456',
+			see:true,
+			animals:[
+			    {text:'pig'},
+			    {text:'ant'},
+			    {text:'monkey'}
+			],
+			rawHtml:"<span style='color:#F56C6C;'>我是动态加载出来的哦 </span>",
+			isdisabled:true,
+			ok:true,
+			url:"www.baidu.com",
+			isActive:true,
+			hasError:true,
+			classObject:{
+				active:true,
+				'text-danger':true
+			},
+			loginType:"userName",
+			
+			object:{
+				name:'sp',
+				sex:'女',
+				age:'18'
+			}
+		},
+		methods: {
+			reverseMsg: function () {
+			  this.message1 = this.message1.split('').reverse().join('');
+			},
+			onSubmit:function(){
+				event.preventDefault();
+			},
+			onChangeLogin:function(){
+				if(this.loginType=="userName"){
+					this.loginType="Email";			
+				}
+				else{
+					this.loginType="userName";
+				}
+			}
+		},
+		computed:{
+			reversedMsgs:function(){
+				return this.message1.split('').reverse().join('');
+			},
+			addClass:function(){
+				return{
+					'active':this.isActive,
+					'text-danger':this.hasError
+				};
+			}
+		}
+	});
+	
+	console.log(vm.reversedMsgs);
+	vm.message1="I have changed";
+	console.log(vm.reversedMsgs);
+</script>
+</html>
