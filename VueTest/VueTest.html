@@ -3,24 +3,7 @@
 <head>
 	<meta charset="UTF-8">
 	<title>Vue Demo</title>
-	<style type="text/css">
-		#demo{padding:0 60px;}
-		.demo-head-container{padding: 10px;border-bottom:1px solid #ddd;}
-		.demo-head{ color: #333;  font-size: 28px; text-align:left;}
-		.demo-subhead{color: #5e6d82; font-size: 14px;line-height: 1em;}
-		.demo-title{ color: #1f2d3d; font-size: 22px; }
-		.demo-code{padding:10px; margin-bottom: 40px; background: #f4f4f4;}
-		.active{font-size: 20px;}
-		.text-danger{color: #F56C6C;font-weight: bolder;}
-		ul,li{list-style-type: none;}
-		a{color: #409EFF;}
-		input{ height: 40px;line-height: 40px; padding: 0 15px;border:1px solid #dcdfe6; outline: none; border-radius: 4px; font-size:400 12px Arial;}
-		input:hover{border:1px solid #ddd;}
-		input:focus{border:1px solid #409EFF;}
-		.btn{display: inline-block;line-height: 1;white-space: nowrap;cursor: pointer;background: #fff;border: 1px solid #dcdfe6;border-color: #dcdfe6;color: #606266;-webkit-appearance: none;text-align: center;box-sizing: border-box;outline: none;margin: 0;transition: .1s;font-weight: 500;-moz-user-select: none;-webkit-user-select: none;-ms-user-select: none;padding: 14px 20px;font-size: 14px;border-radius: 4px;}
-		.btn:hover{color: #409eff;border-color: #c6e2ff;background-color: #ecf5ff;}
-		.btn:active{color: #3a8ee6;border-color: #3a8ee6;outline: none;}
-	</style>
+	<link rel="stylesheet" href="Css/css.css">
 </head>
 <body>
 	<div id="demo">
@@ -94,8 +77,36 @@
 		<ul :class="code" id="v-for-object"  >
 			<li v-for="(value,key,index) in object" :key="value.id">序号：{{index}} 数据： {{key}}：{{value}}</li>
 		</ul>
+		<p :class="title">12. 添加新属性</p>
+		<ul :class="code" id="">
+			<li v-for="value in userProfile">{{value}}</li>
+		</ul>
+		<p :class="title">13. 显示过滤/排序结果 数组[1,2,3,4,5]能被2整除的数据</p>
+		<ul :class="code">
+			<li v-for="i in eventNumbers">{{i}}</li>
+		</ul>
+		<p :class="title">13.1 计算属性不适用的情况下 method方法</p>
+		<ul :class="code">
+			<li v-for="i in eventNumbers">{{i}}</li>
+		</ul>
+		<p :class="title">14.一段取值范围的 v-for</p>
+		<div :class="code" ><span v-for="i in 10">{{i}}&nbsp;</span></div>
+		<p :class="title">14.1 v-for on a template</p>
+		<ul :class="code">
+			<template v-for="item in items">
+				<li>{{item.msg}}</li>
+			</template>
+		</ul>
+		<p :class="title">14.2 v-for with v-if</p>
+		<ul :class="code" v-if="items.length">
+			<template v-for="item in items" v-if="!item.isComplete">
+				<li>{{item.msg}}</li>
+			</template>
+		</ul>
+		<p v-else>no items</p>
+		
+</div>
 
-	</div>
 </body>
 <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js" ></script>
 <script type="text/javascript">
@@ -130,7 +141,17 @@
 				name:'sp',
 				sex:'女',
 				age:'18'
-			}
+			},
+			userProfile:{
+				name:'spcat'
+			},
+			numbers:[1,2,3,4,5],
+			items:[
+				{id:1,msg:"模板循环1",isComplete:true},
+				{id:2,msg:"模板循环2",isComplete:false},
+				{id:3,msg:"模板循环3",isComplete:false},
+			]
+
 		},
 		methods: {
 			reverseMsg: function () {
@@ -146,7 +167,13 @@
 				else{
 					this.loginType="userName";
 				}
+			},
+			even:function(numbers){
+				return numbers.filter(function(number){
+					return number%2===0
+				})
 			}
+
 		},
 		computed:{
 			reversedMsgs:function(){
@@ -157,12 +184,25 @@
 					'active':this.isActive,
 					'text-danger':this.hasError
 				};
+			},
+			eventNumbers:function(){
+				return this.numbers.filter(function(number){
+					return number%2===0
+				})
 			}
 		}
 	});
+	Vue.set(vm.userProfile,'age',20);
 	
+	vm.userProfile=Object.assign({},vm.userProfile,{
+		sex:'女',
+		birthday:'0411'
+	})
 	console.log(vm.reversedMsgs);
 	vm.message1="I have changed";
 	console.log(vm.reversedMsgs);
+
+
+	
 </script>
 </html>
