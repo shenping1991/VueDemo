@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Tab</title>
+	<link rel="stylesheet" href="Css/css.css">
+
+</head>
+<body>
+	<div id="demo">
+		<button
+			v-for="tab in tabs"
+			v-bind:key="tab"
+			v-bind:class="['tab-button ',{active:currentTab===tab.value}]"
+			v-on:click="currentTab=tab.value"
+		>
+		{{tab.content}}
+		</button>
+		<component
+		    v-bind:is="currentTabComponent"
+		    class="tab"
+		></component>
+	</div>
+</body>
+<script type="text/javascript" src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js" ></script>
+<script type="text/javascript">
+	Vue.component('tab-home',{
+		template:'<div>首页</div>'
+	});
+	Vue.component('tab-personal',{
+		template:'<div>个人专区</div>'
+	});
+	Vue.component('tab-contact',{
+		template:'<div>评论专区</div>'
+	});
+	new Vue({
+		el:"#demo",
+		data: {
+		    currentTab: 'Home',
+		    tabs: [
+			    {value:'Home',content:'首页'},
+			    {value:'Personal',content:'个人专区'},
+			    {value:'Contact',content:'评论专区'}
+		    ]
+		  },
+		computed: {
+		    currentTabComponent: function () {
+		      return 'tab-' + this.currentTab.toLowerCase();
+		    }
+		  }
+	});
+</script>
+</html>

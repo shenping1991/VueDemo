@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>VueForm</title>
+	<link rel="stylesheet" href="Css/css.css">
+</head>
+<body>
+	<div id="demo">
+		<div class="demo-head-container">
+			<h3 class="demo-head" style="">表单输入绑定</h3>
+			<p class="demo-subhead">表单绑定练习</p>
+		</div>
+		<p :class="title">1.文本框</p>
+		<div :class="code">
+			<input v-model='message' placeholder='input your name'>
+			<p>我的姓名：{{message}}</p>
+		</div>
+		<p :class="title">1.1.多行文本</p>
+		<div :class="code">
+			<textarea v-model='MultMsg' placeholder='input your resume'></textarea>
+			<p style='white-space:pre-line;'>我的简介：{{MultMsg}}</p>
+		</div>
+		<p :class="title">2.复选框</p>
+		<div :class="code">
+			<input type="checkbox" id="checkbox" v-model="chkChecked"/>
+			<label for="checkbox">{{chkChecked}}</label>
+		</div>
+		<p :class="title">2.1.多个复选框绑定一个数组</p>
+		<div :class="code">
+			项目：
+			<input type="checkbox" id="eat" value="吃饭" v-model="myFavorite">
+			<label for="eat">吃饭</label>
+			<input type="checkbox" id="sleep" value="睡觉" v-model="myFavorite">
+			<label for="sleep">睡觉</label>
+			<input type="checkbox" id="run" value="跑步" v-model="myFavorite">
+			<label for="run">跑步</label>
+			<input type="checkbox" id="swim" value="游泳" v-model="myFavorite">
+			<label for="swim">游泳</label>
+			<input type="checkbox" id="read" value="看书" v-model="myFavorite">
+			<label for="read">看书</label>
+			<br>
+			<span>我的爱好：{{myFavorite}}</span>
+		</div>
+		<p :class="title" >3.单选框</p>
+		<div :class="code">
+			<input type="radio" id="male" value="男" v-model="rtbnsex">
+			<label for="male">男</label>
+			<input type="radio" id="female" value="女" v-model="rtbnsex">
+			<label for="female">女</label>
+			<span>我的性别：{{rtbnsex}}</span>
+		</div>
+		<p :class="title">4.选择框</p>
+		<div :class="code">
+		<select name="" id="" v-model="ddlIndustry">
+			<option value="" disabled="true" vlaue="">请选择</option>
+			<option value="IT">IT</option>
+			<option value="建筑">建筑</option>
+			<option value="金融">金融</option>
+		</select>
+		<span>从事行业：{{ddlIndustry}}</span>
+		</div>
+		<p :class="title">4.1.多选框</p>
+		<div :class="code">
+			<select name="" id="" v-model="multSelected" multiple >
+				<option v-for="option in options" v-bind:value="option.value">{{option.text}}
+				</option>
+			</select>
+			<span>意向岗位：{{multSelected}}</span>
+		</div>
+		<p :class="title">5.文本</p>
+		<div :class="code">
+			只输入数字：<input v-model.number="age" type="number"><br>
+			去除结尾空格：<input v-model.trim="msg" type="text">
+		</div>
+		
+	</div>
+
+</body>
+<script type="text/javascript" src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js" ></script>
+<script type="text/javascript">
+	new Vue({
+		el:"#demo",
+		data:{
+			title:"demo-title",
+			code:"demo-code",
+			btn:"btn",
+			message:'',
+			MultMsg:'',
+			chkChecked:false,
+			myFavorite:[],
+			rtbnsex:'',
+			ddlIndustry:'',
+			options:[
+				{text:'软件开发工程师',value:'软件开发工程师'},
+				{text:'web前端开发工程师',value:'web前端开发工程师'},
+				{text:'硬件开发工程师',value:'硬件开发工程师'},
+				{text:'实施工程师',value:'实施工程师'},
+				{text:'技术工程师',value:'技术工程师'},
+				{text:'产品经理',value:'产品经理'},
+				{text:'UI设计师',value:'UI设计师'},
+				{text:'UE交互设计师',value:'UE交互设计师'},
+			],
+			multSelected:[],
+			age:18,
+			msg:''
+		}
+	});
+</script>
+</html>

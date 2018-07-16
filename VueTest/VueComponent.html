@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>VueComponentDemo</title>
+	<link rel="stylesheet" href="Css/css.css">
+</head>
+<body>
+	<div id="demo">
+		<div class="demo-head-container">
+			<h3 class="demo-head" style="">组件练习</h3>
+			<p class="demo-subhead">组件练习</p>
+		</div>
+		<p :class="title">1.组件示例及复用</p>
+		<div :class="code">
+			<button-counter></button-counter>
+			<button-counter></button-counter>
+		</div>
+		<p :class="title">2.通过 Prop 向子组件传递数据</p>
+		<div :class="code">
+			<blog-post
+			  v-for="post in posts"
+			  v-bind:key="post.id"
+			  v-bind:title="post.title"
+			></blog-post>
+		</div>
+		<p :class="title">3.单个根元素</p>
+		<div :class="code">
+			<blog-post1
+			  v-for="post in posts"
+			  v-bind:key="post.id"
+			  v-bind:post="post"
+			></blog-post1>
+		</div>
+		<p :class="title">4.通过事件向父级组件发送消息</p>
+		<div :class="code">
+			<div :style="{fontSize:postFontSize+'em'}">
+				<blog-post2
+				v-for="post in posts"
+				v-bind:key="post.id"
+				v-bind:post="post"
+				v-on:enlarge-text="postFontSize+=0.1"
+				>
+				</blog-post2>
+			</div>
+		</div>
+		<p :class="title">5.使用事件抛出一个值</p>
+		<div :class="code">
+			<div :style="{fontSize:postFontSize+'em'}">
+				<button :class="btn" v-on:click="counter">点击次数 {{ count }}</button>
+				<blog-post3
+				v-for="post in posts"
+				v-bind:key="post.id"
+				v-bind:post="post"
+				v-on:enlarge-text="postFontSize+=$event"
+				v-on:samll-text="onSmallerText"
+				>
+				</blog-post3>
+			</div>
+		</div>
+		<p :class="title">6.在组件上使用 v-model</p>
+		<div :class="code">
+		</div>
+		<p :class="title">7.通过插槽分发内容</p>
+		<div :class="code">
+			<alter-box>内容有误</alter-box>
+		</div>
+		<p :class="title">8.demo8</p>
+		<div :class="code">content</div>
+	</div>
+</body>
+<script type="text/javascript" src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+<script type="text/javascript">
+	Vue.component('button-counter',{
+		data:function(){
+			return{
+				count:0
+			};
+		},
+		template: '<button class="btn" v-on:click="count++">点击次数 {{ count }} </button>'
+
+	});
+	Vue.component('blog-post',{
+		props:['title'],
+		template:'<h3>{{title}}</h3>'
+	});
+	Vue.component('blog-post1',{
+		props:['post'],
+		template:`
+		<div class="blog-post">
+		<h3>{{post.title}}</h3>
+		<div v-html="post.content"></div>
+		</div>
+		`
+	});
+	Vue.component('blog-post2',{
+		props:["post"],
+		template:`
+			<div class="blog-post">
+			<h3>{{post.title}}</h3>
+			<div v-html="post.content"></div>
+			<button class="btn" v-on:click="$emit('enlarge-text')">增大字号</button>
+			</div>
+		`
+	});
+	Vue.component('blog-post3',{
+		props:["post"],
+		template:`
+			<div class="blog-post">
+			<h3>{{post.title}}</h3>
+			<div v-html="post.content"></div>
+			<button class="btn" v-on:click="$emit('enlarge-text',0.1)">增大字号</button>
+			<button class="btn" v-on:click="$emit('samll-text',0.1)"">减小字号</button>
+			</div>
+		`
+	});
+
+	Vue.component('alter-box',{
+		template:`
+			<div class="demo-alter-box">
+			<strong>警告!</strong>
+			<slot></slot></div>
+			`
+	});
+	new Vue({
+		el:"#demo",
+		data:{
+			title:"demo-title",
+			code:"demo-code",
+			btn:"btn",
+			posts:[
+				{id:1,title:'这里是九曲黄河最后一个弯',content:'<div><span>new</span>习近平要求乡村实现“五个振兴”  先富帮后富</div>'},
+				
+			],
+			postFontSize:1,
+			count:0,
+		},
+		methods:{
+			onSmallerText:function(smallAmount){
+				this.postFontSize-=smallAmount;
+			},
+			counter:function(){
+				this.count+=1;
+			}
+		},
+
+	});
+</script>
+
+</html>
