@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>vue router params</title>
+</head>
+<body>
+	<div id="app">
+	<p>用户编号</p>
+	<div>
+		<router-link to="/user/001">用户001</router-link>
+		<router-link to="/user/002">用户002</router-link>
+		<router-link to="/user/003/name/sm">用户003</router-link>
+	</div>
+	<router-view></router-view>
+	</div>
+</body>
+<script src="https://unpkg.com/vue/dist/vue.js"></script>
+<script src="https://unpkg.com/vue-router/dist/vue-router.js"></script>
+<script>
+	const User={
+		template:'<div>用户编号：{{$route.params.id}}</div>'
+	};
+	const User1={
+		template:'<div>用户编号：{{$route.params.id}}姓名：{{$route.params.name}}</div>'
+	};
+	const router=new VueRouter({
+		routes:[
+			{path:'/user/:id',component:User},
+			{path:'/user/:id/name/:name',component:User1}
+		]
+	});
+	const app=new Vue({
+		router:router
+	}).$mount("#app");
+</script>
+</html>

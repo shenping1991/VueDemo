@@ -73,6 +73,11 @@
 			只输入数字：<input v-model.number="age" type="number"><br>
 			去除结尾空格：<input v-model.trim="msg" type="text">
 		</div>
+		<p :class="title">6.文本</p>
+		<div :class="code">
+			<p>{{msgs}}</p>
+			<input type="text" v-model="msgs">
+		</div>
 		
 	</div>
 
@@ -103,7 +108,8 @@
 			],
 			multSelected:[],
 			age:18,
-			msg:''
+			msg:'',
+			msgs:"I am a demo"
 		}
 	});
 </script>

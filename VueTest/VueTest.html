@@ -170,8 +170,8 @@
 			},
 			even:function(numbers){
 				return numbers.filter(function(number){
-					return number%2===0
-				})
+					return number%2===0;
+				});
 			}
 
 		},
@@ -187,8 +187,8 @@
 			},
 			eventNumbers:function(){
 				return this.numbers.filter(function(number){
-					return number%2===0
-				})
+					return number%2===0;
+				});
 			}
 		}
 	});
@@ -197,7 +197,7 @@
 	vm.userProfile=Object.assign({},vm.userProfile,{
 		sex:'女',
 		birthday:'0411'
-	})
+	});
 	console.log(vm.reversedMsgs);
 	vm.message1="I have changed";
 	console.log(vm.reversedMsgs);

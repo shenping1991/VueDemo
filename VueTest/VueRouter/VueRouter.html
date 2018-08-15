@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Vue Router Test</title>
+</head>
+<body>
+	<div id="app">
+		<h1>Hello World</h1>
+		<p>
+			<router-link to="/First">Go to first </router-link>
+			<router-link to="/Second">Go to second </router-link>
+		</p>
+		<router-view></router-view>
+	</div>
+</body>
+<script src="https://unpkg.com/vue/dist/vue.js"></script>
+<script src="https://unpkg.com/vue-router/dist/vue-router.js"></script>
+<script>
+	const First={template:'<div>First</div>'};
+	const Second={template:'<div>Second</div>'};
+	const routes=[
+		{path:'/First',component:First},
+		{path:'/Second',component:Second}
+	];
+	const router=new VueRouter({
+		routes:routes
+	});
+	const app=new Vue({
+		router
+	}).$mount('#app');
+
+
+</script>
+</html>
