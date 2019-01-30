@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>目标小功能</title>
+	<!-- https://segmentfault.com/a/1190000010801357 -->
+	<style>
+        body{font-family: "微软雅黑";font-size: 14px;}
+        input{font-size: 14px;}
+        body,ul,div,html{padding: 0;margin: 0;}
+        .hidden{display: none;}
+        .main{width: 800px;margin: 0 auto;}
+        li{list-style-type: none;line-height: 40px;position: relative;border: 1px solid transparent;padding: 0 20px;}
+        li .type-span{display: block;width: 10px;height: 10px;background: #ccc;margin: 14px 10px 0 0 ;float: left;}
+        li .status-end{
+        	background: lightgreen;
+        }
+        li .close{position: absolute;color: #f00;font-size: 20px;line-height: 40px;height: 40px;right: 20px;cursor: pointer;display: none;top: 0;}
+        li:hover{border: 1px solid #09f;}
+        li:hover .close{display: block;}
+        li .text-keyword{height: 40px;padding-left: 10px;box-sizing: border-box;margin-left: 10px;width: 80%;display: none;}
+        .text-keyword{box-sizing: border-box;width: 100%;height: 40px;padding-left: 10px;outline: none;}
+        li div{display: block;}
+		li.editing div{display: none;}
+		li .text2{height: 40px;padding-left: 10px;box-sizing: border-box;margin-left: 10px;width: 80%;display: none;}
+		li.editing .text2{display: block;}
+    </style>
+</head>
+<body>
+	<div id="app" class="main">
+		<h2>小目标列表</h2>
+		<div class="list">
+			<h3>添加小目标</h3>
+			<input v-model="addText" @keyup.13='addList' type="text" class="text-keyword" placeholder="输入小目标后，按回车确认"/>
+			<p>共有{{prolist.length}}个目标,{{unfinish==0?'全部已完成':'已完成'+(prolist.length-unfinish)+'个'+',未完成'+unfinish+'个'}}</p>
+			<p>
+				<label for="radio_all"><input type="radio" id="radio_all" name="chooseType" checked @click="chooselist(1)">所有</label>
+				<label for="radio_finished"><input type="radio" id="radio_finished" name="chooseType" @click="chooselist(2)">已完成</label>
+				<label for="radio_unfinish"><input type="radio" id="radio_unfinish" name="chooseType" @click="chooselist(3)">未完成</label>
+			</p>
+			<ul >
+				<li class="li1" v-for="(list,index) in newlist" :class="{'editing':curIndex===index}">
+					<div>
+						<span class="type-span" @click="list.status=!list.status" :class="{'status-end':list.status}"></span>
+						<span @dblclick="curIndex=index">{{list.name}}</span>
+						<span class="close" @click="delList(index)" >X</span>
+					</div>
+					<input type="text" class="text2" v-model="list.name" @keyup.esc='cancelEdit(list)' @blur='edited' @focus='editBefore(list.name)' @keyup.enter='edited'>
+				</li>
+			</ul>
+		</div>
+	</div>
+</body>
+<script type="text/javascript" src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js" ></script>
+<script type="text/javascript">
+	new Vue({
+		el:"#app",
+		data:{
+			addText:'',
+			prolist:[
+				{name:'html',status:false},
+				{name:'css',status:true},
+				{name:'js',status:false}
+			],
+			newlist:[],
+			curIndex:'',
+			beforeEditText:"",
+			curType:0
+		},
+		computed:{
+			//计算属性，返回未完成目标的条数，就是数组里面status=false的条数
+			unfinish:function(){
+	            return this.prolist.filter(function(item){
+	                return !item.status
+            }).length;
+        }
+		},
+		methods:{
+			addList:function(){
+				//添加进来默认status=false,就是未完成状态
+				this.prolist.push({
+					name:this.addText,
+					status:false
+				});
+				this.addText='';
+			},
+			chooselist(Type){
+				switch(Type){
+					case 1:
+						this.newlist=this.prolist;
+						break;
+					case 2:
+						this.newlist=this.prolist.filter(function(item){return item.status});
+						break;
+					case 3:
+						this.newlist=this.prolist.filter(function(item){return !item.status});
+						break;
+				}
+			},
+			delList:function(index){
+				//根据索引，删除数组某一项
+				this.prolist.splice(index,1);
+				//更新newList  newList可能经过this.prolist.filter()赋值，这样的话，删除了prolist不会影响到newList  那么就要手动更新newList
+				this.newlist=this.prolist;
+			},
+			editBefore(name){
+				this.beforeEditText=name;
+			},
+			edited(){
+				this.curIndex="";
+			},
+			cancelEdit(item){
+				item.name=this.beforeEditText;
+				this.curIndex="";
+			}
+
+		},
+		mounted(){
+			this.newlist=this.prolist;
+		},
+		directives:{
+            "focus":{
+                update(el){
+                    el.focus();
+                }
+            }
+        }
+	});
+</script>
+</html>

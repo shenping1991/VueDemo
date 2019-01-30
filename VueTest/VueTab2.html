@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>VueTab</title>
+</head>
+<body>
+	<div id="app">
+		<div class="tab-title">
+			<a href="javascript:;" :class="{'active':currentTab===1}" @click="currentTab=1">tab1</a>
+			<a href="javascript:;" :class="{'active':currentTab===2}" @click="currentTab=2">tab2</a>
+			<a href="javascript:;" :class="{'active':currentTab===3}" @click="currentTab=3">tab3</a>
+			<a href="javascript:;" :class="{'active':currentTab===4}" @click="currentTab=4">tab4</a>
+
+		</div>
+		<div class="tab-content">
+			<div v-show="currentTab===1">
+			content1
+			</div>
+			<div v-show="currentTab===2">
+			content2
+			</div>
+			<div v-show="currentTab===3">
+			content3
+			</div>
+			<div v-show="currentTab===4">
+			content4
+			</div>
+		</div>
+	</div>
+</body>
+<script type="text/javascript" src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js" ></script>
+<script type="text/javascript">
+	new Vue({
+		el:'#app',
+		data:{
+			currentTab:0
+		}
+	})
+</script>
+</html>
